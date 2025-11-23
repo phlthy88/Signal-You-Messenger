@@ -1,0 +1,21 @@
+# List of source files containing translatable strings
+
+# Desktop and metadata
+data/com.signalyou.Messenger.desktop.in
+data/com.signalyou.Messenger.metainfo.xml.in
+
+# UI files
+src/ui/window.blp
+src/ui/chat_list.blp
+src/ui/chat_view.blp
+src/ui/compose_bar.blp
+src/ui/message_row.blp
+src/ui/contact_row.blp
+src/ui/link_device_view.blp
+
+# Rust source files
+src/application.rs
+src/window.rs
+src/ui/chat_list.rs
+src/ui/chat_view.rs
+src/ui/compose_bar.rs

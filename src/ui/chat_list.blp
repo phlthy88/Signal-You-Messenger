@@ -1,0 +1,86 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ChatList : Adw.Bin {
+  Box {
+    orientation: vertical;
+
+    Adw.HeaderBar header_bar {
+      [start]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        menu-model: primary_menu;
+      }
+
+      [end]
+      Button {
+        icon-name: "list-add-symbolic";
+        tooltip-text: _("New Chat");
+        action-name: "win.new-chat";
+      }
+
+      [title]
+      Adw.WindowTitle {
+        title: _("Signal You");
+      }
+    }
+
+    SearchBar {
+      SearchEntry search_entry {
+        placeholder-text: _("Search chats...");
+        search-changed => $on_search_changed();
+      }
+    }
+
+    ScrolledWindow {
+      vexpand: true;
+      hscrollbar-policy: never;
+
+      ListBox list_box {
+        selection-mode: single;
+        activate-on-single-click: true;
+        row-activated => $on_row_activated();
+
+        styles ["navigation-sidebar"]
+
+        Adw.ActionRow {
+          title: _("No conversations yet");
+          subtitle: _("Start a new chat to begin messaging");
+
+          styles ["dim-label"]
+        }
+      }
+    }
+  }
+}
+
+menu primary_menu {
+  section {
+    item {
+      label: _("New Group");
+      action: "win.new-group";
+    }
+
+    item {
+      label: _("Linked Devices");
+      action: "win.linked-devices";
+    }
+  }
+
+  section {
+    item {
+      label: _("Preferences");
+      action: "app.preferences";
+    }
+
+    item {
+      label: _("Keyboard Shortcuts");
+      action: "win.show-help-overlay";
+    }
+
+    item {
+      label: _("About Signal You");
+      action: "app.about";
+    }
+  }
+}

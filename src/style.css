@@ -1,0 +1,227 @@
+/* Signal You Messenger - Material You CSS Styles */
+
+/* Use libadwaita's accent colors for Material You theming */
+@define-color accent_color @accent_bg_color;
+@define-color accent_fg_color @accent_fg_color;
+
+/* Message bubbles */
+.message-row {
+    padding: 6px 12px;
+    margin: 2px 0;
+}
+
+.outgoing-message {
+    margin-left: 48px;
+    margin-right: 12px;
+}
+
+.outgoing-message .message-bubble {
+    background-color: @accent_color;
+    color: @accent_fg_color;
+    border-radius: 18px 18px 4px 18px;
+    padding: 8px 14px;
+}
+
+.incoming-message {
+    margin-left: 12px;
+    margin-right: 48px;
+}
+
+.incoming-message .message-bubble {
+    background-color: alpha(@card_bg_color, 0.8);
+    border-radius: 18px 18px 18px 4px;
+    padding: 8px 14px;
+}
+
+/* Message metadata */
+.message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 4px;
+}
+
+.message-status {
+    margin-left: 4px;
+}
+
+/* Chat list */
+.chat-list-row {
+    padding: 12px;
+    border-radius: 12px;
+    margin: 2px 6px;
+}
+
+.chat-list-row:hover {
+    background-color: alpha(@card_bg_color, 0.5);
+}
+
+.chat-list-row:selected {
+    background-color: alpha(@accent_color, 0.2);
+}
+
+.chat-avatar {
+    margin-right: 12px;
+}
+
+.chat-name {
+    font-weight: 600;
+}
+
+.chat-preview {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.chat-time {
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.unread-badge {
+    background-color: @accent_color;
+    color: @accent_fg_color;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 20px;
+}
+
+/* Compose bar */
+.compose-bar {
+    background-color: @card_bg_color;
+    border-top: 1px solid alpha(@borders, 0.5);
+    padding: 8px 12px;
+}
+
+.compose-bar textview {
+    background-color: alpha(@view_bg_color, 0.5);
+    border-radius: 20px;
+    padding: 8px 16px;
+}
+
+.compose-bar textview text {
+    background: transparent;
+}
+
+.compose-bar .send-button {
+    background-color: @accent_color;
+    color: @accent_fg_color;
+    border-radius: 50%;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px;
+}
+
+.compose-bar .send-button:hover {
+    background-color: lighter(@accent_color);
+}
+
+.compose-bar .attach-button,
+.compose-bar .emoji-button {
+    opacity: 0.7;
+    border-radius: 50%;
+    min-width: 36px;
+    min-height: 36px;
+}
+
+.compose-bar .attach-button:hover,
+.compose-bar .emoji-button:hover {
+    opacity: 1;
+    background-color: alpha(@view_bg_color, 0.3);
+}
+
+/* Link device view */
+.link-device-view {
+    padding: 48px;
+}
+
+.link-device-view .qr-code {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+}
+
+.link-device-view .instructions {
+    opacity: 0.8;
+    text-align: center;
+}
+
+/* Header bar customization */
+.chat-header {
+    padding: 0 12px;
+}
+
+.chat-header .title {
+    font-weight: 600;
+}
+
+.chat-header .subtitle {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+/* Typing indicator */
+.typing-indicator {
+    padding: 8px 16px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.typing-indicator .dots {
+    animation: typing 1.4s infinite;
+}
+
+@keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; }
+    30% { opacity: 1; }
+}
+
+/* Empty state */
+.empty-state {
+    padding: 48px;
+    opacity: 0.5;
+}
+
+.empty-state .icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.empty-state .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.empty-state .description {
+    opacity: 0.8;
+}
+
+/* Scrollbars */
+scrollbar {
+    background: transparent;
+}
+
+scrollbar slider {
+    background-color: alpha(@borders, 0.5);
+    border-radius: 6px;
+    min-width: 6px;
+    min-height: 6px;
+}
+
+scrollbar slider:hover {
+    background-color: alpha(@borders, 0.8);
+}
+
+/* Selection */
+selection {
+    background-color: alpha(@accent_color, 0.3);
+}
+
+/* Focus ring */
+:focus-visible {
+    outline: 2px solid @accent_color;
+    outline-offset: 2px;
+}

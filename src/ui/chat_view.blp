@@ -1,0 +1,84 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ChatView : Adw.Bin {
+  Box {
+    orientation: vertical;
+
+    Adw.HeaderBar header_bar {
+      show-back-button: true;
+
+      [title]
+      Box {
+        orientation: vertical;
+        valign: center;
+        spacing: 2;
+
+        Label title_label {
+          label: _("Select a chat");
+          styles ["title"]
+        }
+
+        Label status_label {
+          label: "";
+          styles ["subtitle", "dim-label"]
+        }
+      }
+
+      [end]
+      MenuButton {
+        icon-name: "view-more-symbolic";
+        menu-model: chat_menu;
+      }
+    }
+
+    ScrolledWindow scrolled_window {
+      vexpand: true;
+      hscrollbar-policy: never;
+
+      ListView message_list {
+        styles ["message-list"]
+
+        factory: SignalListItemFactory {
+          setup => $on_message_setup();
+          bind => $on_message_bind();
+        };
+      }
+    }
+
+    $ComposeBar compose_bar {}
+  }
+}
+
+menu chat_menu {
+  section {
+    item {
+      label: _("View Contact");
+      action: "win.view-contact";
+    }
+
+    item {
+      label: _("Search in Chat");
+      action: "win.search-chat";
+    }
+  }
+
+  section {
+    item {
+      label: _("Disappearing Messages");
+      action: "win.disappearing-messages";
+    }
+
+    item {
+      label: _("Mute Notifications");
+      action: "win.mute-chat";
+    }
+  }
+
+  section {
+    item {
+      label: _("Delete Chat");
+      action: "win.delete-chat";
+    }
+  }
+}

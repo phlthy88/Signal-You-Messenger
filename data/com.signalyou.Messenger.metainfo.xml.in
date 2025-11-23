@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.signalyou.Messenger</id>
+
+  <name>Signal You</name>
+  <summary>GTK4 Material You Signal Messenger client for Linux</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <developer id="com.signalyou">
+    <name>Signal You Team</name>
+  </developer>
+
+  <description>
+    <p>
+      Signal You Messenger is a native GTK4/libadwaita Signal client for Linux,
+      designed with Material You (Material Design 3) aesthetics and deep GNOME
+      integration. This application provides a modern, adaptive Signal experience
+      that feels native on the Linux desktop while maintaining full compatibility
+      with the Signal Protocol.
+    </p>
+    <p>Features include:</p>
+    <ul>
+      <li>End-to-end encryption using the official Signal Protocol</li>
+      <li>Material You theming with adaptive accent colors</li>
+      <li>Native GTK4/libadwaita design for GNOME integration</li>
+      <li>Private and group messaging</li>
+      <li>Media and file sharing</li>
+      <li>Disappearing messages</li>
+      <li>Read receipts and typing indicators</li>
+      <li>Safety number verification</li>
+      <li>System notifications with quick reply</li>
+    </ul>
+    <p>
+      Signal You acts as a linked device to your Signal mobile app. You need
+      the Signal app on your phone to register and link this desktop client.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">com.signalyou.Messenger.desktop</launchable>
+
+  <branding>
+    <color type="primary" scheme_preference="light">#3584e4</color>
+    <color type="primary" scheme_preference="dark">#1a5fb4</color>
+  </branding>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Chat conversation view</caption>
+      <image>https://raw.githubusercontent.com/phlthy88/Signal-You-Messenger/main/screenshots/chat.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Chat list with contacts</caption>
+      <image>https://raw.githubusercontent.com/phlthy88/Signal-You-Messenger/main/screenshots/list.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Device linking with QR code</caption>
+      <image>https://raw.githubusercontent.com/phlthy88/Signal-You-Messenger/main/screenshots/link.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://github.com/phlthy88/Signal-You-Messenger</url>
+  <url type="bugtracker">https://github.com/phlthy88/Signal-You-Messenger/issues</url>
+  <url type="vcs-browser">https://github.com/phlthy88/Signal-You-Messenger</url>
+  <url type="translate">https://github.com/phlthy88/Signal-You-Messenger/tree/main/po</url>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-contacts">intense</content_attribute>
+  </content_rating>
+
+  <releases>
+    <release version="1.0.0" date="2024-01-01">
+      <description>
+        <p>Initial release of Signal You Messenger</p>
+        <ul>
+          <li>Native GTK4/libadwaita interface</li>
+          <li>Material You theming with system accent colors</li>
+          <li>Signal Protocol integration via libsignal</li>
+          <li>Device linking via QR code</li>
+          <li>Private and group messaging</li>
+          <li>Media and file sharing</li>
+          <li>System notifications with quick reply</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+  <requires>
+    <display_length compare="ge">360</display_length>
+    <internet>always</internet>
+  </requires>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <provides>
+    <binary>signal-you-messenger</binary>
+  </provides>
+
+  <keywords>
+    <keyword>signal</keyword>
+    <keyword>messenger</keyword>
+    <keyword>chat</keyword>
+    <keyword>encrypted</keyword>
+    <keyword>secure</keyword>
+    <keyword>private</keyword>
+    <keyword>e2ee</keyword>
+  </keywords>
+
+  <categories>
+    <category>Network</category>
+    <category>InstantMessaging</category>
+    <category>Chat</category>
+    <category>GTK</category>
+  </categories>
+
+  <translation type="gettext">signal-you-messenger</translation>
+</component>

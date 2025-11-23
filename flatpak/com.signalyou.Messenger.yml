@@ -1,98 +1,82 @@
 app-id: com.signalyou.Messenger
-runtime: org.freedesktop.Platform
-runtime-version: '23.08'
-sdk: org.freedesktop.Sdk
-base: org.electronjs.Electron2.BaseApp
-base-version: '23.08'
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
 
 command: signal-you-messenger
 
-separate-locales: false
-
 finish-args:
-  # X11 + Wayland support
+  # Wayland and X11 support
   - --share=ipc
-  - --socket=x11
+  - --socket=fallback-x11
   - --socket=wayland
-  # Audio support
+  # Audio support for voice messages
   - --socket=pulseaudio
-  # Network access for messaging
+  # Network access for Signal servers
   - --share=network
   # GPU acceleration
   - --device=dri
-  # File access for attachments
-  - --filesystem=xdg-documents
-  - --filesystem=xdg-download
-  - --filesystem=xdg-pictures
+  # File access for attachments (portal-based)
+  - --filesystem=xdg-download:rw
   # Desktop notifications
   - --talk-name=org.freedesktop.Notifications
-  # System tray support
-  - --talk-name=org.kde.StatusNotifierWatcher
-  - --own-name=org.kde.*
+  # Background portal for receiving messages
+  - --talk-name=org.freedesktop.portal.Background
   # Secret storage for credentials
   - --talk-name=org.freedesktop.secrets
-  # Drag and drop
+  # XDG portals
   - --talk-name=org.freedesktop.portal.*
 
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/signal-you-messenger/cargo
+    RUST_BACKTRACE: '1'
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/man
+  - '*.a'
+  - '*.la'
+
 modules:
-  # Node.js runtime for backend server
-  - name: nodejs
-    buildsystem: simple
-    build-commands:
-      - install -D -m 755 bin/node /app/bin/node
-      - ln -s /app/bin/node /app/bin/nodejs
+  # SQLCipher for encrypted database
+  - name: sqlcipher
+    buildsystem: autotools
+    config-opts:
+      - --enable-tempstore=yes
+      - --disable-tcl
+      - CFLAGS=-DSQLITE_HAS_CODEC
+      - LDFLAGS=-lcrypto
     sources:
       - type: archive
-        url: https://nodejs.org/dist/v20.10.0/node-v20.10.0-linux-x64.tar.xz
-        sha256: 3fe4ec5d70c8b4ffc1461dec83ab23fc70124e137c4caea1c622943f5f87ab87
-        only-arches:
-          - x86_64
+        url: https://github.com/sqlcipher/sqlcipher/archive/v4.5.6.tar.gz
+        sha256: e4a527e38e67090c1d2dc41df28270d16c15f7ca5210a3e7ec4c4b8fda36e28f
+
+  # Blueprint compiler for UI templates
+  - name: blueprint-compiler
+    buildsystem: meson
+    sources:
       - type: archive
-        url: https://nodejs.org/dist/v20.10.0/node-v20.10.0-linux-arm64.tar.xz
-        sha256: afa18aab4b1c73b78a9e6a2a4a8fdbb2e5e5c672c64e64e2e5c30e9e3d0e3b0a
-        only-arches:
-          - aarch64
+        url: https://gitlab.gnome.org/jwestman/blueprint-compiler/-/archive/v0.12.0/blueprint-compiler-v0.12.0.tar.gz
+        sha256: c1e944b2d9e2c6cb7ddf13eb45b3c0aa8d6f6e69f4fb1ea7fc792bdc2e5e5d1a
+    cleanup:
+      - '*'
 
   # Main application
   - name: signal-you-messenger
-    buildsystem: simple
+    buildsystem: meson
+    config-opts:
+      - -Dprofile=default
     build-options:
       env:
-        XDG_CACHE_HOME: /run/build/signal-you-messenger/flatpak-node/cache
-        npm_config_cache: /run/build/signal-you-messenger/flatpak-node/npm-cache
-        npm_config_offline: 'true'
-    build-commands:
-      # Install dependencies
-      - npm install --offline
-      - cd server && npm install --offline
-      # Build the application
-      - ELECTRON=true npm run build
-      # Install to /app
-      - mkdir -p /app/lib/signal-you-messenger
-      - cp -r dist /app/lib/signal-you-messenger/
-      - cp -r server /app/lib/signal-you-messenger/
-      - cp -r electron /app/lib/signal-you-messenger/
-      - cp package.json /app/lib/signal-you-messenger/
-      # Copy Electron
-      - cp -r node_modules/electron/dist/* /app/lib/signal-you-messenger/
-      # Install launcher script
-      - install -Dm755 flatpak/signal-you-messenger.sh /app/bin/signal-you-messenger
-      # Install desktop file
-      - install -Dm644 flatpak/com.signalyou.Messenger.desktop /app/share/applications/com.signalyou.Messenger.desktop
-      # Install icons
-      - install -Dm644 build/icons/icon-16.png /app/share/icons/hicolor/16x16/apps/com.signalyou.Messenger.png
-      - install -Dm644 build/icons/icon-32.png /app/share/icons/hicolor/32x32/apps/com.signalyou.Messenger.png
-      - install -Dm644 build/icons/icon-48.png /app/share/icons/hicolor/48x48/apps/com.signalyou.Messenger.png
-      - install -Dm644 build/icons/icon-64.png /app/share/icons/hicolor/64x64/apps/com.signalyou.Messenger.png
-      - install -Dm644 build/icons/icon-128.png /app/share/icons/hicolor/128x128/apps/com.signalyou.Messenger.png
-      - install -Dm644 build/icons/icon-256.png /app/share/icons/hicolor/256x256/apps/com.signalyou.Messenger.png
-      - install -Dm644 build/icons/icon-512.png /app/share/icons/hicolor/512x512/apps/com.signalyou.Messenger.png
-      # Install appdata
-      - install -Dm644 flatpak/com.signalyou.Messenger.metainfo.xml /app/share/metainfo/com.signalyou.Messenger.metainfo.xml
+        CARGO_NET_OFFLINE: 'true'
     sources:
       - type: dir
         path: ..
-      # Generated sources for offline npm install
-      - type: file
-        path: flatpak-npm-sources.json
-        dest-filename: flatpak-node/npm-sources.json
+      # Generated cargo sources for offline build
+      # Generate with: flatpak-cargo-generator.py Cargo.lock -o flatpak/cargo-sources.json
+      - cargo-sources.json
