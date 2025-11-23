@@ -115,6 +115,32 @@
         -ms-overflow-style: none;
         scrollbar-width: none;
       }
+
+      /* Electron-specific styles */
+      .electron-app {
+        /* Add draggable region for title bar on macOS */
+        -webkit-app-region: drag;
+      }
+
+      .electron-app button,
+      .electron-app input,
+      .electron-app textarea,
+      .electron-app select,
+      .electron-app a {
+        -webkit-app-region: no-drag;
+      }
+
+      /* Platform-specific adjustments */
+      .platform-darwin {
+        /* macOS specific */
+        padding-top: env(safe-area-inset-top, 0);
+      }
+
+      /* Disable text selection in electron app chrome */
+      .electron-app .no-select {
+        -webkit-user-select: none;
+        user-select: none;
+      }
     </style>
   </head>
   <body>

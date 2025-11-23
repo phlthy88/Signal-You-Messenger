@@ -1,4 +1,13 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+import { getApiBaseUrl, isElectron } from './electron';
+
+// API base URL - will be set dynamically
+let API_BASE = import.meta.env.VITE_API_URL || '/api';
+
+// Initialize API URL (call this on app startup)
+export async function initializeApi(): Promise<void> {
+  API_BASE = await getApiBaseUrl();
+  console.log('API initialized with base URL:', API_BASE);
+}
 
 interface ApiError {
   error: string;
@@ -7,10 +16,18 @@ interface ApiError {
 
 class ApiClient {
   private token: string | null = null;
+  private initialized = false;
 
   constructor() {
     // Try to restore token from localStorage
     this.token = localStorage.getItem('auth_token');
+  }
+
+  async ensureInitialized(): Promise<void> {
+    if (!this.initialized) {
+      await initializeApi();
+      this.initialized = true;
+    }
   }
 
   setToken(token: string | null) {
@@ -26,10 +43,16 @@ class ApiClient {
     return this.token;
   }
 
+  getBaseUrl() {
+    return API_BASE;
+  }
+
   private async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
+    await this.ensureInitialized();
+
     const url = `${API_BASE}${endpoint}`;
 
     const headers: HeadersInit = {
@@ -196,6 +219,8 @@ class ApiClient {
 
   // Upload endpoints
   async uploadFile(file: File) {
+    await this.ensureInitialized();
+
     const formData = new FormData();
     formData.append('file', file);
 

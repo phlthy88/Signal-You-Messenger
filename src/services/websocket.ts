@@ -1,4 +1,5 @@
 import { api } from './api';
+import { getWebSocketUrl, isElectron } from './electron';
 
 type MessageHandler = (data: any) => void;
 
@@ -9,21 +10,25 @@ class WebSocketService {
   private reconnectDelay = 1000;
   private handlers: Map<string, Set<MessageHandler>> = new Map();
   private pingInterval: NodeJS.Timeout | null = null;
+  private wsUrl: string | null = null;
 
-  connect() {
+  async connect() {
     const token = api.getToken();
     if (!token) {
       console.warn('No auth token, cannot connect to WebSocket');
       return;
     }
 
-    const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:3001/ws';
+    // Get WebSocket URL (may be async in Electron)
+    if (!this.wsUrl) {
+      this.wsUrl = await getWebSocketUrl();
+    }
 
     try {
-      this.ws = new WebSocket(wsUrl);
+      this.ws = new WebSocket(this.wsUrl);
 
       this.ws.onopen = () => {
-        console.log('WebSocket connected');
+        console.log('WebSocket connected to:', this.wsUrl);
         this.reconnectAttempts = 0;
 
         // Authenticate
@@ -85,6 +90,8 @@ class WebSocketService {
       this.ws.close();
       this.ws = null;
     }
+    // Reset URL so it will be fetched again on reconnect
+    this.wsUrl = null;
   }
 
   send(data: object) {
@@ -129,6 +136,16 @@ class WebSocketService {
 
   sendMessageRead(chatId: string, messageId: string) {
     this.send({ type: 'message_read', chatId, messageId });
+  }
+
+  // Reset reconnection attempts (useful when connection is restored)
+  resetReconnection() {
+    this.reconnectAttempts = 0;
+  }
+
+  // Check connection status
+  isConnected(): boolean {
+    return this.ws !== null && this.ws.readyState === WebSocket.OPEN;
   }
 }
 

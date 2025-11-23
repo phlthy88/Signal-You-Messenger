@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6750A4"/>
+      <stop offset="100%" style="stop-color:#9A82DB"/>
+    </linearGradient>
+    <linearGradient id="bubbleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF"/>
+      <stop offset="100%" style="stop-color:#E8DEF8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)"/>
+
+  <!-- Outer ring -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#FFFFFF" stroke-width="8" opacity="0.3"/>
+
+  <!-- Chat bubble shape -->
+  <path d="M160 180 C160 152 183 128 212 128 H300 C329 128 352 152 352 180 V260 C352 288 329 312 300 312 H240 L200 352 V312 H212 C183 312 160 288 160 260 Z"
+        fill="url(#bubbleGradient)"
+        stroke="#6750A4"
+        stroke-width="4"/>
+
+  <!-- Chat lines -->
+  <rect x="190" y="170" width="120" height="12" rx="6" fill="#6750A4" opacity="0.7"/>
+  <rect x="190" y="200" width="90" height="12" rx="6" fill="#6750A4" opacity="0.5"/>
+  <rect x="190" y="230" width="105" height="12" rx="6" fill="#6750A4" opacity="0.3"/>
+
+  <!-- AI sparkle/star -->
+  <path d="M340 140 L346 156 L364 156 L350 168 L354 184 L340 174 L326 184 L330 168 L316 156 L334 156 Z"
+        fill="#FFD700"
+        stroke="#E6B800"
+        stroke-width="2"/>
+
+  <!-- Secondary sparkles -->
+  <circle cx="380" cy="180" r="6" fill="#FFD700" opacity="0.8"/>
+  <circle cx="130" cy="320" r="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="390" cy="320" r="5" fill="#FFFFFF" opacity="0.4"/>
+
+  <!-- "S" letter stylized -->
+  <text x="256" y="420"
+        font-family="Arial, sans-serif"
+        font-size="48"
+        font-weight="bold"
+        fill="#FFFFFF"
+        text-anchor="middle">
+    Signal You
+  </text>
+</svg>

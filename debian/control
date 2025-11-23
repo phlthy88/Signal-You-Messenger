@@ -1,0 +1,39 @@
+Source: signal-you-messenger
+Section: net
+Priority: optional
+Maintainer: Signal You Team <team@signalyou.com>
+Build-Depends: debhelper (>= 12),
+               nodejs (>= 18),
+               npm
+Standards-Version: 4.6.0
+Homepage: https://github.com/phlthy88/Signal-You-Messenger
+Vcs-Browser: https://github.com/phlthy88/Signal-You-Messenger
+Vcs-Git: https://github.com/phlthy88/Signal-You-Messenger.git
+Rules-Requires-Root: no
+
+Package: signal-you-messenger
+Architecture: amd64 arm64
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libgtk-3-0,
+         libnotify4,
+         libnss3,
+         libxss1,
+         libxtst6,
+         libatspi2.0-0,
+         libuuid1,
+         libsecret-1-0,
+         xdg-utils
+Recommends: libappindicator3-1
+Description: Secure messaging application with AI features
+ Signal You Messenger is a modern, secure messaging application that
+ combines end-to-end encryption with AI-powered features for an enhanced
+ communication experience.
+ .
+ Features include:
+  * Secure messaging with real-time WebSocket communication
+  * AI-powered smart replies using Google Gemini
+  * Multiple themes including dark mode
+  * Contact management and user discovery
+  * File and image attachments
+  * Cross-platform support

@@ -1,0 +1,10 @@
+signal-you-messenger (1.0.0-1) unstable; urgency=medium
+
+  * Initial release
+  * Secure messaging with real-time WebSocket communication
+  * AI-powered smart replies using Google Gemini
+  * Four beautiful themes including dark mode
+  * Contact management and user discovery
+  * File and image attachments
+
+ -- Signal You Team <team@signalyou.com>  Sat, 01 Jan 2024 00:00:00 +0000
