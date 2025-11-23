@@ -9,5 +9,6 @@ mod message_row;
 
 pub use chat_list::ChatList;
 pub use chat_view::ChatView;
-pub use compose_bar::ComposeBar;
+pub use compose_bar::{ComposeBar, DisappearingTimer};
 pub use link_device_view::LinkDeviceView;
+pub use message_row::MessageRow;
