@@ -7,7 +7,6 @@ use anyhow::{anyhow, Result};
 use std::collections::HashMap;
 use std::sync::Arc;
 use tokio::sync::RwLock;
-use x25519_dalek::PublicKey as X25519PublicKey;
 
 use super::crypto::{
     calculate_fingerprint, DhKeyPair, IdentityKeyPair, IdentityPublicKey, PreKey, PreKeyBundle,

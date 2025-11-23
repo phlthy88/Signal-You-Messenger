@@ -26,13 +26,4 @@ mod types;
 mod x3dh;
 
 // Re-export main types
-pub use client::{ConnectionStatus, LinkingSession, SignalClient, SignalEvent};
-pub use crypto::{
-    calculate_fingerprint, DhKeyPair, IdentityKeyPair, IdentityPublicKey, MessageKeys, PreKey,
-    PreKeyBundle, SignalCipher, SignalHkdf, SignedPreKey,
-};
-pub use protocol::{ProtocolAddress, SignalProtocol};
-pub use ratchet::{MessageHeader, RatchetMessage, SessionState};
-pub use store::SignalStore;
-pub use types::*;
-pub use x3dh::{x3dh_initiate, x3dh_respond, InitialMessage, X3dhResult};
+pub use client::{SignalClient, SignalEvent};
