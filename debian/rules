@@ -1,0 +1,65 @@
+#!/usr/bin/make -f
+
+# Debian rules file for signal-you-messenger
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export HOME = $(CURDIR)/debian/build-home
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# Create temp home for npm
+	mkdir -p $(HOME)
+
+override_dh_auto_build:
+	# Install dependencies
+	npm ci --offline || npm install
+	cd server && npm ci --offline || npm install
+	# Build the application
+	ELECTRON=true npm run build
+
+override_dh_auto_install:
+	# Install main application
+	mkdir -p debian/signal-you-messenger/opt/signal-you-messenger
+	cp -r dist debian/signal-you-messenger/opt/signal-you-messenger/
+	cp -r server debian/signal-you-messenger/opt/signal-you-messenger/
+	cp -r electron debian/signal-you-messenger/opt/signal-you-messenger/
+	cp -r node_modules debian/signal-you-messenger/opt/signal-you-messenger/
+	cp package.json debian/signal-you-messenger/opt/signal-you-messenger/
+
+	# Remove dev dependencies and unnecessary files
+	rm -rf debian/signal-you-messenger/opt/signal-you-messenger/server/node_modules/.cache
+	rm -rf debian/signal-you-messenger/opt/signal-you-messenger/server/data
+	rm -rf debian/signal-you-messenger/opt/signal-you-messenger/server/uploads
+
+	# Install launcher script
+	mkdir -p debian/signal-you-messenger/usr/bin
+	install -m 755 debian/signal-you-messenger.sh debian/signal-you-messenger/usr/bin/signal-you-messenger
+
+	# Install desktop file
+	mkdir -p debian/signal-you-messenger/usr/share/applications
+	install -m 644 debian/signal-you-messenger.desktop debian/signal-you-messenger/usr/share/applications/
+
+	# Install icons
+	for size in 16 32 48 64 128 256 512; do \
+		mkdir -p debian/signal-you-messenger/usr/share/icons/hicolor/$${size}x$${size}/apps; \
+		install -m 644 build/icons/icon-$${size}.png \
+			debian/signal-you-messenger/usr/share/icons/hicolor/$${size}x$${size}/apps/signal-you-messenger.png 2>/dev/null || true; \
+	done
+
+	# Install scalable icon if available
+	mkdir -p debian/signal-you-messenger/usr/share/icons/hicolor/scalable/apps
+	install -m 644 build/icons/icon.svg \
+		debian/signal-you-messenger/usr/share/icons/hicolor/scalable/apps/signal-you-messenger.svg 2>/dev/null || true
+
+override_dh_auto_clean:
+	rm -rf node_modules server/node_modules dist release
+	rm -rf debian/build-home
+
+override_dh_strip:
+	# Skip stripping for Electron binaries
+
+override_dh_shlibdeps:
+	dh_shlibdeps -l/opt/signal-you-messenger

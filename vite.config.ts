@@ -1,110 +1,56 @@
 import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
+  const isElectron = process.env.ELECTRON === 'true';
+  const backendPort = process.env.BACKEND_PORT || '3001';
 
   return {
+    // Base path for Electron production builds
+    base: isElectron ? './' : '/',
+
     server: {
       port: 3000,
       host: '0.0.0.0',
       proxy: {
         '/api': {
-          target: 'http://localhost:3001',
+          target: `http://localhost:${backendPort}`,
           changeOrigin: true,
         },
         '/ws': {
-          target: 'ws://localhost:3001',
+          target: `ws://localhost:${backendPort}`,
           ws: true,
         },
         '/uploads': {
-          target: 'http://localhost:3001',
+          target: `http://localhost:${backendPort}`,
           changeOrigin: true,
         },
       },
     },
+
     plugins: [
       react(),
-      VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-        manifest: {
-          name: 'Signal You Messenger',
-          short_name: 'Signal You',
-          description: 'Secure messaging with AI features',
-          theme_color: '#6750A4',
-          background_color: '#FFFBFE',
-          display: 'standalone',
-          orientation: 'portrait',
-          scope: '/',
-          start_url: '/',
-          icons: [
-            {
-              src: '/pwa-192x192.png',
-              sizes: '192x192',
-              type: 'image/png',
-            },
-            {
-              src: '/pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-            },
-            {
-              src: '/pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'any maskable',
-            },
-          ],
-        },
-        workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-          runtimeCaching: [
-            {
-              urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'google-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365,
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
-              },
-            },
-            {
-              urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'gstatic-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365,
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
-              },
-            },
-          ],
-        },
-      }),
     ],
+
     define: {
-      // No API key exposure - handled securely by backend
+      // Electron environment flag
+      'import.meta.env.ELECTRON': JSON.stringify(isElectron),
+      'import.meta.env.BACKEND_PORT': JSON.stringify(backendPort),
     },
+
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
     },
+
     build: {
       outDir: 'dist',
-      sourcemap: true,
+      sourcemap: mode !== 'production',
+      // Ensure assets are loaded correctly in Electron
+      assetsDir: 'assets',
       rollupOptions: {
         output: {
           manualChunks: {
@@ -113,6 +59,11 @@ export default defineConfig(({ mode }) => {
           },
         },
       },
+    },
+
+    // Optimize deps for Electron
+    optimizeDeps: {
+      exclude: ['electron'],
     },
   };
 });

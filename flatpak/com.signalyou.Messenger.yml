@@ -1,0 +1,98 @@
+app-id: com.signalyou.Messenger
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '23.08'
+
+command: signal-you-messenger
+
+separate-locales: false
+
+finish-args:
+  # X11 + Wayland support
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  # Audio support
+  - --socket=pulseaudio
+  # Network access for messaging
+  - --share=network
+  # GPU acceleration
+  - --device=dri
+  # File access for attachments
+  - --filesystem=xdg-documents
+  - --filesystem=xdg-download
+  - --filesystem=xdg-pictures
+  # Desktop notifications
+  - --talk-name=org.freedesktop.Notifications
+  # System tray support
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --own-name=org.kde.*
+  # Secret storage for credentials
+  - --talk-name=org.freedesktop.secrets
+  # Drag and drop
+  - --talk-name=org.freedesktop.portal.*
+
+modules:
+  # Node.js runtime for backend server
+  - name: nodejs
+    buildsystem: simple
+    build-commands:
+      - install -D -m 755 bin/node /app/bin/node
+      - ln -s /app/bin/node /app/bin/nodejs
+    sources:
+      - type: archive
+        url: https://nodejs.org/dist/v20.10.0/node-v20.10.0-linux-x64.tar.xz
+        sha256: 3fe4ec5d70c8b4ffc1461dec83ab23fc70124e137c4caea1c622943f5f87ab87
+        only-arches:
+          - x86_64
+      - type: archive
+        url: https://nodejs.org/dist/v20.10.0/node-v20.10.0-linux-arm64.tar.xz
+        sha256: afa18aab4b1c73b78a9e6a2a4a8fdbb2e5e5c672c64e64e2e5c30e9e3d0e3b0a
+        only-arches:
+          - aarch64
+
+  # Main application
+  - name: signal-you-messenger
+    buildsystem: simple
+    build-options:
+      env:
+        XDG_CACHE_HOME: /run/build/signal-you-messenger/flatpak-node/cache
+        npm_config_cache: /run/build/signal-you-messenger/flatpak-node/npm-cache
+        npm_config_offline: 'true'
+    build-commands:
+      # Install dependencies
+      - npm install --offline
+      - cd server && npm install --offline
+      # Build the application
+      - ELECTRON=true npm run build
+      # Install to /app
+      - mkdir -p /app/lib/signal-you-messenger
+      - cp -r dist /app/lib/signal-you-messenger/
+      - cp -r server /app/lib/signal-you-messenger/
+      - cp -r electron /app/lib/signal-you-messenger/
+      - cp package.json /app/lib/signal-you-messenger/
+      # Copy Electron
+      - cp -r node_modules/electron/dist/* /app/lib/signal-you-messenger/
+      # Install launcher script
+      - install -Dm755 flatpak/signal-you-messenger.sh /app/bin/signal-you-messenger
+      # Install desktop file
+      - install -Dm644 flatpak/com.signalyou.Messenger.desktop /app/share/applications/com.signalyou.Messenger.desktop
+      # Install icons
+      - install -Dm644 build/icons/icon-16.png /app/share/icons/hicolor/16x16/apps/com.signalyou.Messenger.png
+      - install -Dm644 build/icons/icon-32.png /app/share/icons/hicolor/32x32/apps/com.signalyou.Messenger.png
+      - install -Dm644 build/icons/icon-48.png /app/share/icons/hicolor/48x48/apps/com.signalyou.Messenger.png
+      - install -Dm644 build/icons/icon-64.png /app/share/icons/hicolor/64x64/apps/com.signalyou.Messenger.png
+      - install -Dm644 build/icons/icon-128.png /app/share/icons/hicolor/128x128/apps/com.signalyou.Messenger.png
+      - install -Dm644 build/icons/icon-256.png /app/share/icons/hicolor/256x256/apps/com.signalyou.Messenger.png
+      - install -Dm644 build/icons/icon-512.png /app/share/icons/hicolor/512x512/apps/com.signalyou.Messenger.png
+      # Install appdata
+      - install -Dm644 flatpak/com.signalyou.Messenger.metainfo.xml /app/share/metainfo/com.signalyou.Messenger.metainfo.xml
+    sources:
+      - type: dir
+        path: ..
+      # Generated sources for offline npm install
+      - type: file
+        path: flatpak-npm-sources.json
+        dest-filename: flatpak-node/npm-sources.json

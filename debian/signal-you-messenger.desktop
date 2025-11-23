@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=Signal You Messenger
+Comment=Secure messaging with AI features
+GenericName=Messenger
+Exec=/usr/bin/signal-you-messenger %U
+Icon=signal-you-messenger
+Type=Application
+StartupNotify=true
+StartupWMClass=signal-you-messenger
+Categories=Network;InstantMessaging;Chat;
+Keywords=messenger;chat;signal;secure;encrypted;ai;
+MimeType=x-scheme-handler/signalyou;
+Actions=new-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=/usr/bin/signal-you-messenger --new-window

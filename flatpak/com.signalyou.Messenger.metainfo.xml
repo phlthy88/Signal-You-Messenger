@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.signalyou.Messenger</id>
+  <name>Signal You Messenger</name>
+  <summary>Secure messaging with AI features</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer_name>Signal You Team</developer_name>
+
+  <description>
+    <p>
+      Signal You Messenger is a modern, secure messaging application that combines
+      end-to-end encryption with AI-powered features for an enhanced communication experience.
+    </p>
+    <p>Key features:</p>
+    <ul>
+      <li>Secure messaging with end-to-end encryption</li>
+      <li>AI-powered smart replies and conversation summaries</li>
+      <li>Real-time messaging with typing indicators</li>
+      <li>Read receipts and message status tracking</li>
+      <li>Contact management and user search</li>
+      <li>File and image sharing</li>
+      <li>Multiple themes including dark mode</li>
+      <li>Cross-platform support</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">com.signalyou.Messenger.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Main chat interface</caption>
+      <image>https://raw.githubusercontent.com/phlthy88/Signal-You-Messenger/main/screenshots/chat.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Contact list</caption>
+      <image>https://raw.githubusercontent.com/phlthy88/Signal-You-Messenger/main/screenshots/contacts.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Settings and themes</caption>
+      <image>https://raw.githubusercontent.com/phlthy88/Signal-You-Messenger/main/screenshots/settings.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://github.com/phlthy88/Signal-You-Messenger</url>
+  <url type="bugtracker">https://github.com/phlthy88/Signal-You-Messenger/issues</url>
+  <url type="help">https://github.com/phlthy88/Signal-You-Messenger/wiki</url>
+
+  <content_rating type="oars-1.1">
+    <content_attribute id="social-chat">intense</content_attribute>
+    <content_attribute id="social-contacts">intense</content_attribute>
+  </content_rating>
+
+  <releases>
+    <release version="1.0.0" date="2024-01-01">
+      <description>
+        <p>Initial release of Signal You Messenger</p>
+        <ul>
+          <li>Secure messaging with real-time WebSocket communication</li>
+          <li>AI-powered smart replies using Google Gemini</li>
+          <li>Four beautiful themes including dark mode</li>
+          <li>Contact management and user discovery</li>
+          <li>File and image attachments</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+
+  <keywords>
+    <keyword>messenger</keyword>
+    <keyword>chat</keyword>
+    <keyword>secure</keyword>
+    <keyword>encrypted</keyword>
+    <keyword>ai</keyword>
+    <keyword>signal</keyword>
+    <keyword>communication</keyword>
+  </keywords>
+
+  <categories>
+    <category>Network</category>
+    <category>InstantMessaging</category>
+    <category>Chat</category>
+  </categories>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <requires>
+    <display_length compare="ge">360</display_length>
+    <internet>always</internet>
+  </requires>
+</component>
