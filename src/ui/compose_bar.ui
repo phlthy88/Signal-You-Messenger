@@ -5,63 +5,273 @@
   <template class="ComposeBar" parent="AdwBin">
     <child>
       <object class="GtkBox">
-        <property name="orientation">horizontal</property>
-        <property name="spacing">6</property>
-        <property name="margin-start">12</property>
-        <property name="margin-end">12</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">12</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">0</property>
+        <!-- Reply preview bar -->
         <child>
-          <object class="GtkButton" id="attach_button">
-            <property name="icon-name">mail-attachment-symbolic</property>
-            <property name="valign">end</property>
-            <property name="tooltip-text" translatable="yes">Attach file</property>
-            <signal name="clicked" handler="on_attach_clicked"/>
-            <style>
-              <class name="flat"/>
-            </style>
-          </object>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow">
-            <property name="hexpand">true</property>
-            <property name="max-content-height">150</property>
-            <property name="propagate-natural-height">true</property>
-            <property name="hscrollbar-policy">never</property>
+          <object class="GtkRevealer" id="reply_revealer">
+            <property name="reveal-child">false</property>
+            <property name="transition-type">slide-down</property>
             <child>
-              <object class="GtkTextView" id="text_view">
-                <property name="wrap-mode">word-char</property>
-                <property name="left-margin">12</property>
-                <property name="right-margin">12</property>
-                <property name="top-margin">8</property>
-                <property name="bottom-margin">8</property>
+              <object class="GtkBox" id="reply_box">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">8</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">8</property>
+                <property name="margin-bottom">4</property>
+                <child>
+                  <object class="GtkBox" id="reply_accent">
+                    <property name="width-request">3</property>
+                    <style>
+                      <class name="accent"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <property name="spacing">2</property>
+                    <property name="hexpand">true</property>
+                    <child>
+                      <object class="GtkLabel" id="reply_sender_label">
+                        <property name="halign">start</property>
+                        <property name="ellipsize">end</property>
+                        <style>
+                          <class name="caption"/>
+                          <class name="accent"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="reply_content_label">
+                        <property name="halign">start</property>
+                        <property name="ellipsize">end</property>
+                        <property name="max-width-chars">50</property>
+                        <style>
+                          <class name="caption"/>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkButton" id="cancel_reply_button">
+                    <property name="icon-name">window-close-symbolic</property>
+                    <property name="valign">center</property>
+                    <property name="tooltip-text" translatable="yes">Cancel reply</property>
+                    <signal name="clicked" handler="on_cancel_reply_clicked"/>
+                    <style>
+                      <class name="flat"/>
+                      <class name="circular"/>
+                    </style>
+                  </object>
+                </child>
                 <style>
-                  <class name="card"/>
+                  <class name="reply-preview"/>
                 </style>
               </object>
             </child>
           </object>
         </child>
+        <!-- Disappearing message indicator -->
         <child>
-          <object class="GtkMenuButton" id="emoji_button">
-            <property name="icon-name">face-smile-symbolic</property>
-            <property name="valign">end</property>
-            <property name="tooltip-text" translatable="yes">Insert emoji</property>
-            <style>
-              <class name="flat"/>
-            </style>
+          <object class="GtkRevealer" id="disappearing_revealer">
+            <property name="reveal-child">false</property>
+            <property name="transition-type">slide-down</property>
+            <child>
+              <object class="GtkBox" id="disappearing_box">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">6</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">12</property>
+                <property name="margin-top">4</property>
+                <property name="margin-bottom">4</property>
+                <property name="halign">start</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">hourglass-symbolic</property>
+                    <property name="pixel-size">14</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="disappearing_label">
+                    <property name="label">Messages disappear after 24h</property>
+                    <style>
+                      <class name="caption"/>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+                <style>
+                  <class name="disappearing-indicator"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
+        <!-- Main compose area -->
         <child>
-          <object class="GtkButton" id="send_button">
-            <property name="icon-name">send-symbolic</property>
-            <property name="valign">end</property>
-            <property name="tooltip-text" translatable="yes">Send message</property>
-            <signal name="clicked" handler="on_send_clicked"/>
-            <style>
-              <class name="suggested-action"/>
-              <class name="circular"/>
-            </style>
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <property name="margin-start">12</property>
+            <property name="margin-end">12</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">12</property>
+            <child>
+              <object class="GtkButton" id="attach_button">
+                <property name="icon-name">mail-attachment-symbolic</property>
+                <property name="valign">end</property>
+                <property name="tooltip-text" translatable="yes">Attach file</property>
+                <signal name="clicked" handler="on_attach_clicked"/>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow">
+                <property name="hexpand">true</property>
+                <property name="max-content-height">150</property>
+                <property name="propagate-natural-height">true</property>
+                <property name="hscrollbar-policy">never</property>
+                <child>
+                  <object class="GtkTextView" id="text_view">
+                    <property name="wrap-mode">word-char</property>
+                    <property name="left-margin">12</property>
+                    <property name="right-margin">12</property>
+                    <property name="top-margin">8</property>
+                    <property name="bottom-margin">8</property>
+                    <style>
+                      <class name="card"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <!-- Disappearing message timer button -->
+            <child>
+              <object class="GtkMenuButton" id="timer_button">
+                <property name="icon-name">hourglass-symbolic</property>
+                <property name="valign">end</property>
+                <property name="tooltip-text" translatable="yes">Disappearing messages</property>
+                <property name="popover">
+                  <object class="GtkPopover" id="timer_popover">
+                    <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">6</property>
+                        <property name="margin-start">12</property>
+                        <property name="margin-end">12</property>
+                        <property name="margin-top">12</property>
+                        <property name="margin-bottom">12</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">Disappearing Messages</property>
+                            <property name="halign">start</property>
+                            <style>
+                              <class name="heading"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="timer_options">
+                            <property name="orientation">vertical</property>
+                            <property name="spacing">2</property>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_off">
+                                <property name="label" translatable="yes">Off</property>
+                                <property name="active">true</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_30s">
+                                <property name="label" translatable="yes">30 seconds</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_5m">
+                                <property name="label" translatable="yes">5 minutes</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_1h">
+                                <property name="label" translatable="yes">1 hour</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_8h">
+                                <property name="label" translatable="yes">8 hours</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_1d">
+                                <property name="label" translatable="yes">1 day</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_1w">
+                                <property name="label" translatable="yes">1 week</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkCheckButton" id="timer_4w">
+                                <property name="label" translatable="yes">4 weeks</property>
+                                <property name="group">timer_off</property>
+                                <signal name="toggled" handler="on_timer_toggled"/>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuButton" id="emoji_button">
+                <property name="icon-name">face-smile-symbolic</property>
+                <property name="valign">end</property>
+                <property name="tooltip-text" translatable="yes">Insert emoji</property>
+                <style>
+                  <class name="flat"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="send_button">
+                <property name="icon-name">send-symbolic</property>
+                <property name="valign">end</property>
+                <property name="tooltip-text" translatable="yes">Send message</property>
+                <signal name="clicked" handler="on_send_clicked"/>
+                <style>
+                  <class name="suggested-action"/>
+                  <class name="circular"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>

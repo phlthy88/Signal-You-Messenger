@@ -225,3 +225,201 @@ selection {
     outline: 2px solid @accent_color;
     outline-offset: 2px;
 }
+
+/* ============================================
+   Phase 1 Features - Core Messaging
+   ============================================ */
+
+/* Enhanced message bubbles */
+.message-bubble {
+    padding: 10px 14px;
+    border-radius: 18px;
+}
+
+.outgoing-bubble {
+    background-color: @accent_color;
+    color: @accent_fg_color;
+    border-radius: 18px 18px 4px 18px;
+}
+
+.incoming-bubble {
+    background-color: alpha(@card_bg_color, 0.8);
+    border-radius: 18px 18px 18px 4px;
+}
+
+/* Read receipt status icons */
+.status-sending {
+    opacity: 0.5;
+}
+
+.status-sent {
+    opacity: 0.7;
+}
+
+.status-delivered {
+    opacity: 0.9;
+    color: @success_color;
+}
+
+.status-read {
+    opacity: 1;
+    color: @accent_color;
+}
+
+.status-failed {
+    opacity: 1;
+    color: @error_color;
+}
+
+/* Message reactions */
+.reactions {
+    margin-top: 4px;
+}
+
+.reaction-badge {
+    background-color: alpha(@view_bg_color, 0.6);
+    border-radius: 12px;
+    padding: 4px 8px;
+    margin: 2px;
+    font-size: 0.9rem;
+}
+
+.reaction-badge:hover {
+    background-color: alpha(@view_bg_color, 0.9);
+}
+
+/* Quote/Reply preview in message */
+.quote-preview {
+    background-color: alpha(@view_bg_color, 0.3);
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 6px;
+}
+
+.quote-preview .accent {
+    background-color: @accent_color;
+    border-radius: 2px;
+}
+
+/* Reply preview in compose bar */
+.reply-preview {
+    background-color: alpha(@view_bg_color, 0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.reply-preview .accent {
+    background-color: @accent_color;
+    border-radius: 2px;
+}
+
+/* Disappearing message indicator */
+.disappearing-indicator {
+    background-color: alpha(@warning_color, 0.1);
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+/* Expiry countdown in message */
+.expiry-indicator {
+    opacity: 0.7;
+}
+
+/* Timer button active state */
+.timer-active {
+    color: @accent_color;
+}
+
+/* Context menu for messages */
+.message-context-menu {
+    padding: 6px;
+    border-radius: 12px;
+}
+
+.message-context-menu button {
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+/* Emoji picker in context menu */
+.quick-reactions {
+    padding: 8px;
+    border-bottom: 1px solid alpha(@borders, 0.3);
+}
+
+.quick-reactions button {
+    font-size: 1.5rem;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: transparent;
+}
+
+.quick-reactions button:hover {
+    background-color: alpha(@view_bg_color, 0.5);
+}
+
+/* Sender label in group messages */
+.sender-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+}
+
+/* Avatar styling */
+.message-avatar {
+    margin-right: 8px;
+}
+
+/* Message list background */
+.message-list {
+    background-color: @view_bg_color;
+}
+
+/* Smooth transitions */
+.message-bubble,
+.reaction-badge,
+.reply-preview {
+    transition: background-color 200ms ease;
+}
+
+/* Hover effects for interactive elements */
+.message-bubble:hover {
+    filter: brightness(1.05);
+}
+
+/* Disappearing message visual indicator */
+.disappearing-message {
+    position: relative;
+}
+
+.disappearing-message::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    background-image: url("resource:///com/signalyou/Messenger/icons/hourglass.svg");
+    background-size: contain;
+    opacity: 0.5;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .outgoing-bubble {
+        background-color: @accent_color;
+    }
+
+    .incoming-bubble {
+        background-color: alpha(@card_bg_color, 0.9);
+    }
+
+    .reaction-badge {
+        background-color: alpha(@view_bg_color, 0.4);
+    }
+
+    .quote-preview,
+    .reply-preview {
+        background-color: alpha(@view_bg_color, 0.2);
+    }
+}
