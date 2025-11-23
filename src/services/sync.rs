@@ -90,7 +90,7 @@ impl SyncService {
                 tracing::info!("Group updated: {}", group.id);
                 // TODO: Update group in store
             }
-            SignalEvent::SyncReceived(sync_message) => {
+            SignalEvent::SyncReceived(_sync_message) => {
                 tracing::info!("Sync message received");
                 // TODO: Process sync message
             }
