@@ -3,7 +3,6 @@
 use gtk4::prelude::*;
 use gtk4::{gio, glib};
 use libadwaita as adw;
-use libadwaita::prelude::*;
 
 use crate::config;
 use crate::window::SignalYouWindow;

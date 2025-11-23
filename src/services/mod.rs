@@ -9,9 +9,7 @@ mod notifications;
 mod sync;
 mod websocket;
 
-pub use notifications::NotificationService;
-pub use sync::SyncService;
 pub use websocket::{
-    IncomingMessage, ProvisioningMessage, ProvisioningSocket, SignalEndpoints,
-    WebSocketCredentials, WebSocketRequest, WebSocketResponse, WebSocketService,
+    IncomingMessage, ProvisioningMessage, ProvisioningSocket, WebSocketCredentials,
+    WebSocketService,
 };

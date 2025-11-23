@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use x25519_dalek::PublicKey as X25519PublicKey;
 use zeroize::{Zeroize, ZeroizeOnDrop};
 
-use super::crypto::{DhKeyPair, MessageKeys, SignalCipher, SignalHkdf, NONCE_SIZE};
+use super::crypto::{DhKeyPair, SignalCipher, SignalHkdf, NONCE_SIZE};
 
 /// Maximum number of skipped message keys to store
 const MAX_SKIP: u32 = 1000;

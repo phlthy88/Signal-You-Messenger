@@ -10,7 +10,7 @@ use std::sync::Arc;
 use tokio::sync::{mpsc, RwLock};
 use uuid::Uuid;
 
-use super::crypto::{DhKeyPair, IdentityKeyPair, SignalCipher};
+use super::crypto::{DhKeyPair, SignalCipher};
 use super::protocol::{ProtocolAddress, SignalProtocol};
 use super::store::SignalStore;
 use super::types::*;
