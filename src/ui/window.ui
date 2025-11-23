@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="SignalYouWindow" parent="AdwApplicationWindow">
+    <property name="default-width">1000</property>
+    <property name="default-height">700</property>
+    <property name="title">Signal You</property>
+    <child>
+      <object class="AdwToastOverlay" id="toast_overlay">
+        <child>
+          <object class="AdwNavigationSplitView" id="split_view">
+            <property name="sidebar-width-fraction">0.33</property>
+            <property name="min-sidebar-width">280</property>
+            <property name="max-sidebar-width">400</property>
+            <property name="sidebar">
+              <object class="AdwNavigationPage">
+                <property name="title" translatable="yes">Chats</property>
+                <property name="child">
+                  <object class="ChatList" id="chat_list"/>
+                </property>
+              </object>
+            </property>
+            <property name="content">
+              <object class="AdwNavigationPage">
+                <property name="title" translatable="yes">Conversation</property>
+                <property name="child">
+                  <object class="ChatView" id="chat_view"/>
+                </property>
+              </object>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

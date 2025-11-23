@@ -411,7 +411,7 @@ impl SignalHkdf {
     /// Derive message keys from chain key
     pub fn derive_message_keys(chain_key: &[u8; 32]) -> Result<MessageKeys> {
         // Derive next chain key
-        let mut mac = Hmac::<Sha256>::new_from_slice(chain_key)
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(chain_key)
             .map_err(|_| anyhow!("Invalid chain key length"))?;
         mac.update(&[0x02]);
         let next_chain_key_result = mac.finalize().into_bytes();
@@ -419,7 +419,7 @@ impl SignalHkdf {
         next_chain_key.copy_from_slice(&next_chain_key_result);
 
         // Derive message key material
-        let mut mac = Hmac::<Sha256>::new_from_slice(chain_key)
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(chain_key)
             .map_err(|_| anyhow!("Invalid chain key length"))?;
         mac.update(&[0x01]);
         let message_key_material = mac.finalize().into_bytes();

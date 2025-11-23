@@ -1,13 +1,13 @@
 //! Device linking view with QR code
 
 use gtk4::prelude::*;
+use gtk4::subclass::prelude::ObjectSubclassIsExt;
 use gtk4::glib;
 use libadwaita as adw;
-use libadwaita::prelude::*;
 
 mod imp {
     use super::*;
-    use gtk4::subclass::prelude::*;
+    use adw::subclass::prelude::*;
 
     #[derive(Debug, Default, gtk4::CompositeTemplate)]
     #[template(resource = "/com/signalyou/Messenger/ui/link_device_view.ui")]
@@ -92,9 +92,7 @@ impl LinkDeviceView {
         // 4. Listen for provisioning response
 
         glib::spawn_future_local(glib::clone!(
-            #[weak(rename_to = view)]
-            self,
-            async move {
+            @weak self as view => async move {
                 // Simulate QR code generation
                 glib::timeout_future(std::time::Duration::from_secs(1)).await;
 
