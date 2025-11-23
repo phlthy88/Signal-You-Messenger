@@ -564,7 +564,7 @@ impl WebSocketRequest {
         } else {
             None
         };
-        offset += body_len;
+        // Note: offset not incremented as headers parsing is not implemented yet
 
         // Headers (simplified - skip for now)
         let headers = vec![];

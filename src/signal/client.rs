@@ -93,7 +93,7 @@ impl SignalClient {
 
         // Try to load existing identity
         let (protocol, identity, is_linked) =
-            if let Some((pub_key, priv_key, reg_id)) = store.get_local_identity().await? {
+            if let Some((_pub_key, priv_key, reg_id)) = store.get_local_identity().await? {
                 let mut key_bytes = [0u8; 32];
                 key_bytes.copy_from_slice(&priv_key[..32]);
                 let protocol = SignalProtocol::from_identity(&key_bytes, reg_id)?;
@@ -590,7 +590,7 @@ impl SignalClient {
         };
 
         // Create message content
-        let msg_content = if content_type.starts_with("image/") {
+        let _msg_content = if content_type.starts_with("image/") {
             MessageContent::Image {
                 attachment,
                 caption: caption.map(|s| s.to_string()),
