@@ -100,7 +100,8 @@ impl SignalClient {
 
                 // Load identity from store
                 let identity = store.get_identity().await?;
-                (protocol, identity, identity.is_some())
+                let is_linked = identity.is_some();
+                (protocol, identity, is_linked)
             } else {
                 (SignalProtocol::new()?, None, false)
             };
@@ -576,7 +577,7 @@ impl SignalClient {
         // For now, create a local attachment reference
         let attachment = Attachment {
             id: Uuid::new_v4().to_string(),
-            content_type,
+            content_type: content_type.clone(),
             file_name,
             size: file_data.len() as u64,
             digest,

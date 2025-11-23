@@ -1,6 +1,7 @@
 //! Contact row widget for chat list
 
 use gtk4::prelude::*;
+use gtk4::subclass::prelude::ObjectSubclassIsExt;
 use gtk4::glib;
 use libadwaita as adw;
 

@@ -1,6 +1,7 @@
 //! System notification handling
 
 use gtk4::gio;
+use gtk4::gio::prelude::*;
 
 /// Service for managing desktop notifications
 pub struct NotificationService {

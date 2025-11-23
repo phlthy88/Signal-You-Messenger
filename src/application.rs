@@ -10,7 +10,7 @@ use crate::window::SignalYouWindow;
 
 mod imp {
     use super::*;
-    use gtk4::subclass::prelude::*;
+    use adw::subclass::prelude::*;
 
     #[derive(Debug, Default)]
     pub struct SignalYouApplication {}
@@ -38,7 +38,7 @@ mod imp {
             let window = if let Some(window) = application.active_window() {
                 window
             } else {
-                let window = SignalYouWindow::new(&*application);
+                let window = SignalYouWindow::new(application.upcast_ref());
                 window.upcast()
             };
 
@@ -116,8 +116,7 @@ impl SignalYouApplication {
     }
 
     fn show_about_dialog(&self) {
-        let window = self.active_window();
-        let dialog = adw::AboutDialog::builder()
+        let mut builder = adw::AboutWindow::builder()
             .application_name("Signal You Messenger")
             .application_icon(config::APP_ID)
             .version(config::VERSION)
@@ -128,9 +127,14 @@ impl SignalYouApplication {
             .developers(vec!["Signal You Team".to_string()])
             .copyright("© 2024 Signal You Team")
             .comments("A GTK4/libadwaita Material You fork of Signal Messenger for Linux")
-            .build();
+            .modal(true);
 
-        dialog.present(window.as_ref());
+        if let Some(window) = self.active_window() {
+            builder = builder.transient_for(&window);
+        }
+
+        let dialog = builder.build();
+        dialog.present();
     }
 
     fn show_preferences(&self) {

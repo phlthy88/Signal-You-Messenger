@@ -1,15 +1,15 @@
 //! Main application window
 
 use gtk4::prelude::*;
+use gtk4::subclass::prelude::ObjectSubclassIsExt;
 use gtk4::{gio, glib};
 use libadwaita as adw;
-use libadwaita::prelude::*;
 
 use crate::ui::{ChatList, ChatView, LinkDeviceView};
 
 mod imp {
     use super::*;
-    use gtk4::subclass::prelude::*;
+    use adw::subclass::prelude::*;
     use std::cell::RefCell;
 
     #[derive(Debug, Default, gtk4::CompositeTemplate)]

@@ -8,13 +8,18 @@ use crate::signal::{SignalClient, SignalEvent};
 /// Service for synchronizing messages with Signal servers
 pub struct SyncService {
     client: std::sync::Arc<tokio::sync::Mutex<SignalClient>>,
+    event_rx: Option<mpsc::Receiver<SignalEvent>>,
     shutdown_tx: Option<mpsc::Sender<()>>,
 }
 
 impl SyncService {
-    pub fn new(client: std::sync::Arc<tokio::sync::Mutex<SignalClient>>) -> Self {
+    pub fn new(
+        client: std::sync::Arc<tokio::sync::Mutex<SignalClient>>,
+        event_rx: mpsc::Receiver<SignalEvent>,
+    ) -> Self {
         Self {
             client,
+            event_rx: Some(event_rx),
             shutdown_tx: None,
         }
     }
@@ -24,7 +29,7 @@ impl SyncService {
         let (shutdown_tx, mut shutdown_rx) = mpsc::channel::<()>(1);
         self.shutdown_tx = Some(shutdown_tx);
 
-        let client = self.client.clone();
+        let mut event_rx = self.event_rx.take().expect("Event receiver already taken");
 
         tokio::spawn(async move {
             tracing::info!("Sync service started");
@@ -35,12 +40,12 @@ impl SyncService {
                         tracing::info!("Sync service shutting down");
                         break;
                     }
-                    event = async {
-                        let mut guard = client.lock().await;
-                        guard.events().recv().await
-                    } => {
+                    event = event_rx.recv() => {
                         if let Some(event) = event {
                             Self::handle_event(event).await;
+                        } else {
+                            tracing::info!("Event channel closed, shutting down sync service");
+                            break;
                         }
                     }
                 }

@@ -1,12 +1,13 @@
 //! Message composition bar
 
 use gtk4::prelude::*;
-use gtk4::{gio, glib};
+use gtk4::subclass::prelude::ObjectSubclassIsExt;
+use gtk4::glib;
 use libadwaita as adw;
 
 mod imp {
     use super::*;
-    use gtk4::subclass::prelude::*;
+    use adw::subclass::prelude::*;
 
     #[derive(Debug, Default, gtk4::CompositeTemplate)]
     #[template(resource = "/com/signalyou/Messenger/ui/compose_bar.ui")]
@@ -81,10 +82,7 @@ impl ComposeBar {
 
         let controller = gtk4::EventControllerKey::new();
         controller.connect_key_pressed(glib::clone!(
-            #[weak(rename_to = compose_bar)]
-            self,
-            #[upgrade_or]
-            glib::Propagation::Proceed,
+            @weak self as compose_bar => @default-return glib::Propagation::Proceed,
             move |_, key, _, modifier| {
                 if key == gtk4::gdk::Key::Return
                     && !modifier.contains(gtk4::gdk::ModifierType::SHIFT_MASK)
