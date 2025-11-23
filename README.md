@@ -3,14 +3,14 @@
 
 # Signal You Messenger
 
-**Secure messaging application with AI-powered features**
+**A GTK4/libadwaita Material You fork of Signal Messenger for Linux**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
-[![Electron](https://img.shields.io/badge/Electron-33-blue.svg)](https://www.electronjs.org/)
-[![React](https://img.shields.io/badge/React-19-61dafb.svg)](https://react.dev/)
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![GTK4](https://img.shields.io/badge/GTK-4.0-green.svg)](https://gtk.org/)
+[![libadwaita](https://img.shields.io/badge/libadwaita-1.4-purple.svg)](https://gnome.pages.gitlab.gnome.org/libadwaita/)
+[![Signal Protocol](https://img.shields.io/badge/Signal-Protocol-blue.svg)](https://signal.org/)
 
-[Features](#features) | [Installation](#installation) | [Development](#development) | [Building](#building) | [Documentation](#documentation)
+[Features](#features) | [Installation](#installation) | [Building](#building) | [Contributing](#contributing)
 
 </div>
 
@@ -18,257 +18,261 @@
 
 ## Overview
 
-Signal You Messenger is a modern, cross-platform desktop messaging application that combines secure communication with AI-powered features. Built with Electron, React, and Node.js, it delivers a native experience on Linux, macOS, and Windows.
+Signal You Messenger is a native GTK4/libadwaita Signal client for Linux, designed with Material You (Material Design 3) aesthetics and deep GNOME integration. This project aims to provide a modern, adaptive Signal experience that feels native on the Linux desktop while maintaining full compatibility with the Signal Protocol.
+
+### Why Signal You?
+
+- **Native GTK4 Experience**: Built with GTK4 and libadwaita for seamless GNOME integration
+- **Material You Theming**: Adaptive color schemes that follow your system accent colors
+- **Signal Protocol**: Full end-to-end encryption using the official libsignal library
+- **Flatpak First**: Primary distribution through Flathub for easy installation and updates
+- **Lightweight**: Native performance without Electron overhead
 
 ## Features
 
+### Signal Protocol Integration
+- **End-to-end encryption** - Full Signal Protocol implementation via libsignal
+- **Sealed sender** - Enhanced metadata protection
+- **Perfect forward secrecy** - Compromised keys don't affect past messages
+- **Message verification** - Safety number verification for contacts
+
 ### Core Messaging
-- **Real-time messaging** - Instant message delivery using WebSocket connections
-- **Chat management** - Create, organize, and manage conversations
-- **Contact list** - Add and manage contacts with ease
-- **Message history** - Full chat history with local storage
+- **Private chats** - One-on-one encrypted conversations
+- **Group messaging** - Secure group conversations with Signal groups
+- **Media sharing** - Send photos, videos, files, and voice messages
+- **Disappearing messages** - Auto-delete messages after a set time
+- **Read receipts** - Optional delivery and read confirmations
+- **Typing indicators** - See when contacts are typing
 
-### AI Integration
-- **Gemini AI** - Powered by Google's Gemini API for intelligent responses
-- **Smart suggestions** - AI-assisted message composition
-- **Context-aware responses** - Intelligent conversation understanding
+### GTK4/libadwaita Design
+- **Adaptive layouts** - Responsive design for any screen size
+- **Material You colors** - Dynamic theming based on system accent color
+- **Dark/Light modes** - Automatic theme switching with system preference
+- **GNOME integration** - Native notifications, app indicators, and portal support
+- **Touch-friendly** - Optimized for touchscreen devices and convertibles
 
-### Desktop Experience
-- **Native notifications** - System-level notification support
-- **System tray** - Quick access from the system tray with context menu
-- **Keyboard shortcuts** - Efficient navigation with hotkeys
-- **Dark/Light themes** - Material Design 3 theming with theme switching
-- **Emoji picker** - Rich emoji support for expressive messaging
-
-### Security & Authentication
-- **JWT authentication** - Secure token-based authentication
-- **Password hashing** - bcrypt password encryption
-- **Session management** - Persistent login sessions
-
-### File Sharing
-- **File uploads** - Share files and media in chats
-- **Image support** - Send and receive images
-- **Configurable limits** - Adjustable file size restrictions
+### Desktop Integration
+- **System notifications** - Native GNOME notification support
+- **Quick reply** - Reply directly from notifications
+- **Do Not Disturb** - Respect GNOME's notification settings
+- **Background operation** - Continue receiving messages when minimized
+- **File portal** - Secure file access through XDG portals
 
 ## Technology Stack
 
 | Component | Technology |
 |-----------|------------|
-| Frontend | React 19, TypeScript, Vite, Zustand |
-| Backend | Node.js, Express, SQLite (better-sqlite3) |
-| Desktop | Electron 33 |
-| Real-time | WebSocket (ws) |
-| AI | Google Gemini API |
-| Styling | Tailwind CSS, Material Design 3 |
-| Testing | Vitest, React Testing Library |
+| UI Framework | GTK4, libadwaita 1.4 |
+| Language | Rust |
+| Signal Protocol | libsignal-client |
+| Database | SQLCipher (encrypted SQLite) |
+| Async Runtime | Tokio |
+| Build System | Meson, Cargo |
+| Packaging | Flatpak (primary), Deb, RPM |
 
 ## Installation
 
-### Prerequisites
-- Node.js 18 or higher
-- npm 9 or higher
+### Flatpak (Recommended)
 
-### Quick Start
+```bash
+# Add Flathub if not already configured
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Install Signal You Messenger
+flatpak install flathub com.signalyou.Messenger
+
+# Run
+flatpak run com.signalyou.Messenger
+```
+
+### Debian/Ubuntu
+
+```bash
+# Download the latest .deb package from releases
+sudo dpkg -i signal-you-messenger_*.deb
+sudo apt-get install -f  # Install dependencies
+```
+
+### Fedora/RHEL
+
+```bash
+# Download the latest .rpm package from releases
+sudo dnf install signal-you-messenger-*.rpm
+```
+
+### Arch Linux (AUR)
+
+```bash
+# Using yay
+yay -S signal-you-messenger
+
+# Or manually
+git clone https://aur.archlinux.org/signal-you-messenger.git
+cd signal-you-messenger
+makepkg -si
+```
+
+## Building from Source
+
+### Prerequisites
+
+#### Fedora/RHEL
+```bash
+sudo dnf install gtk4-devel libadwaita-devel rust cargo meson ninja-build \
+    openssl-devel protobuf-compiler clang-devel
+```
+
+#### Debian/Ubuntu
+```bash
+sudo apt install libgtk-4-dev libadwaita-1-dev rustc cargo meson ninja-build \
+    libssl-dev protobuf-compiler libclang-dev build-essential
+```
+
+#### Arch Linux
+```bash
+sudo pacman -S gtk4 libadwaita rust meson ninja openssl protobuf clang
+```
+
+### Build Steps
 
 ```bash
 # Clone the repository
 git clone https://github.com/phlthy88/Signal-You-Messenger.git
 cd Signal-You-Messenger
 
-# Install dependencies (includes server dependencies)
-npm install
+# Configure with Meson
+meson setup build --prefix=/usr
 
-# Set up environment variables
-cp .env.example .env.local
-# Edit .env.local with your API keys
+# Build
+meson compile -C build
 
-# Start development server
-npm run dev
+# Install (optional)
+sudo meson install -C build
+
+# Or run directly
+./build/src/signal-you-messenger
 ```
 
-### Pre-built Packages
-
-Download the latest release for your platform:
-
-| Platform | Formats |
-|----------|---------|
-| **Linux** | `.deb`, `.rpm`, `.AppImage`, `.flatpak` |
-| **macOS** | `.dmg`, `.zip` |
-| **Windows** | `.exe` (NSIS installer), portable |
-
-## Development
-
-### Available Scripts
+### Flatpak Build
 
 ```bash
-# Web development
-npm run dev              # Start Vite dev server
+# Install Flatpak SDK
+flatpak install flathub org.gnome.Platform//46 org.gnome.Sdk//46
 
-# Electron development
-npm run dev:electron     # Start Electron with hot reload
+# Build and install locally
+flatpak-builder --user --install --force-clean build-dir flatpak/com.signalyou.Messenger.yml
 
-# Backend server
-npm run server           # Start backend in development mode
-npm run server:start     # Start backend in production mode
-
-# Testing
-npm run test             # Run tests
-npm run test:ui          # Run tests with UI
-npm run test:coverage    # Run tests with coverage
-
-# Linting
-npm run lint             # Lint source code
+# Run
+flatpak run com.signalyou.Messenger
 ```
 
-### Project Structure
+## Project Structure
 
 ```
 Signal-You-Messenger/
-├── src/                    # Frontend source code
-│   ├── components/         # React components
-│   │   ├── AuthForm.tsx    # Authentication UI
-│   │   ├── ChatList.tsx    # Chat list sidebar
-│   │   ├── ChatWindow.tsx  # Main chat interface
-│   │   ├── ContactList.tsx # Contact management
-│   │   ├── EmojiPicker.tsx # Emoji selection
-│   │   ├── Settings.tsx    # App settings
-│   │   └── Sidebar.tsx     # Navigation sidebar
-│   ├── contexts/           # React contexts
-│   ├── services/           # API and WebSocket services
-│   ├── store/              # Zustand state management
-│   └── test/               # Test files
-├── server/                 # Backend server
-│   ├── routes/             # API endpoints
-│   │   ├── auth.js         # Authentication
-│   │   ├── chats.js        # Chat operations
-│   │   ├── contacts.js     # Contact management
-│   │   ├── ai.js           # AI integration
-│   │   ├── settings.js     # User settings
-│   │   └── upload.js       # File uploads
-│   ├── services/           # Backend services
-│   ├── middleware/         # Express middleware
-│   ├── models/             # Database models
-│   └── config/             # Configuration
-├── electron/               # Electron main process
-│   ├── main.js             # Main entry point
-│   └── preload.js          # Preload script
-├── build/                  # Build resources & icons
-├── debian/                 # Debian packaging
-├── flatpak/                # Flatpak packaging
-└── scripts/                # Build scripts
+├── src/                        # Rust source code
+│   ├── main.rs                 # Application entry point
+│   ├── application.rs          # GtkApplication implementation
+│   ├── window.rs               # Main window
+│   ├── ui/                     # UI components
+│   │   ├── chat_list.rs        # Conversation list
+│   │   ├── chat_view.rs        # Message view
+│   │   ├── message_row.rs      # Individual message widget
+│   │   ├── compose_bar.rs      # Message composition
+│   │   └── contact_row.rs      # Contact list item
+│   ├── signal/                 # Signal protocol integration
+│   │   ├── client.rs           # Signal client wrapper
+│   │   ├── protocol.rs         # Protocol implementation
+│   │   ├── store.rs            # Encrypted storage
+│   │   └── types.rs            # Signal data types
+│   └── services/               # Background services
+│       ├── notifications.rs    # Notification handling
+│       ├── sync.rs             # Message sync
+│       └── websocket.rs        # Signal WebSocket
+├── data/                       # Application data files
+│   ├── com.signalyou.Messenger.desktop.in
+│   ├── com.signalyou.Messenger.metainfo.xml.in
+│   ├── com.signalyou.Messenger.gschema.xml
+│   └── icons/                  # Application icons
+├── po/                         # Translations
+├── flatpak/                    # Flatpak packaging
+│   └── com.signalyou.Messenger.yml
+├── debian/                     # Debian packaging
+├── Cargo.toml                  # Rust dependencies
+├── meson.build                 # Meson build configuration
+└── meson_options.txt           # Build options
 ```
-
-## Building
-
-### Build for Current Platform
-
-```bash
-npm run electron:build
-```
-
-### Platform-Specific Builds
-
-```bash
-# Linux
-npm run electron:build:linux      # All Linux formats
-npm run electron:build:deb        # Debian package
-npm run electron:build:appimage   # AppImage
-npm run electron:build:flatpak    # Flatpak
-npm run electron:build:rpm        # RPM package
-
-# macOS
-npm run electron:build:mac
-
-# Windows
-npm run electron:build:win
-
-# All platforms
-npm run electron:build:all
-```
-
-### Manual Package Building
-
-For more control over the build process:
-
-```bash
-# Debian package
-./scripts/build-deb.sh
-
-# Flatpak bundle
-./scripts/build-flatpak.sh
-
-# Generate icons (first time)
-./scripts/generate-icons.sh
-```
-
-See [BUILDING.md](./BUILDING.md) for detailed build instructions and troubleshooting.
 
 ## Configuration
 
+Signal You Messenger stores its configuration and data in standard XDG directories:
+
+- **Config**: `~/.config/signal-you-messenger/`
+- **Data**: `~/.local/share/signal-you-messenger/`
+- **Cache**: `~/.cache/signal-you-messenger/`
+
 ### Environment Variables
-
-Create a `.env.local` file in the root directory:
-
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-### Server Configuration
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `PORT` | Backend server port | `3001` |
-| `JWT_SECRET` | JWT signing secret | Auto-generated |
-| `GEMINI_API_KEY` | Google Gemini API key | Optional |
-| `CORS_ORIGIN` | Allowed CORS origin | `http://localhost:3000` |
-| `MAX_FILE_SIZE` | Max upload size (bytes) | `10485760` (10MB) |
+| `SIGNAL_YOU_DEBUG` | Enable debug logging | `0` |
+| `SIGNAL_YOU_PROFILE` | Configuration profile name | `default` |
 
-## Documentation
+## Linking to Signal
 
-- [Building Guide](./BUILDING.md) - Detailed build instructions for all platforms
-- [API Documentation](./server/README.md) - Backend API reference
+Signal You Messenger requires linking to an existing Signal account:
 
-## Architecture
+1. Open Signal on your primary device (phone)
+2. Go to Settings → Linked Devices
+3. Scan the QR code displayed in Signal You Messenger
+4. Your message history will sync to the desktop client
 
-Signal You Messenger uses a modern architecture:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Electron Shell                          │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  ┌─────────────────────┐    ┌─────────────────────────────┐│
-│  │    React Frontend   │◄──►│     Express Backend         ││
-│  │                     │    │                             ││
-│  │  • Components       │    │  • REST API                 ││
-│  │  • Zustand Store    │    │  • WebSocket Server         ││
-│  │  • Theme Context    │    │  • SQLite Database          ││
-│  │  • WebSocket Client │    │  • Gemini AI Service        ││
-│  └─────────────────────┘    └─────────────────────────────┘│
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
+**Note**: Signal You Messenger acts as a linked device. You need the Signal mobile app to register a new account.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please read our contributing guidelines before submitting pull requests.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### Development Setup
+
+```bash
+# Clone with development dependencies
+git clone https://github.com/phlthy88/Signal-You-Messenger.git
+cd Signal-You-Messenger
+
+# Set up development environment
+meson setup build -Dprofile=development
+
+# Run with debug output
+SIGNAL_YOU_DEBUG=1 ./build/src/signal-you-messenger
+```
+
+### Code Style
+
+- Follow Rust standard formatting (`cargo fmt`)
+- Use meaningful variable and function names
+- Document public APIs with rustdoc
+- Write tests for new functionality
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+Signal You Messenger uses the Signal Protocol, which is licensed under the GPLv3.
+
+## Acknowledgments
+
+- [Signal](https://signal.org/) - For the Signal Protocol and inspiration
+- [GNOME](https://gnome.org/) - For GTK4 and libadwaita
+- [libsignal](https://github.com/signalapp/libsignal) - Signal Protocol implementation
+- [Flare](https://gitlab.com/schmiddi-on-mobile/flare) - Inspiration for GTK Signal clients
 
 ---
 
 <div align="center">
 
-**Built with Electron, React, and Node.js**
+**Built with GTK4, libadwaita, and the Signal Protocol**
 
-Made with care for secure, intelligent messaging
+A native Linux Signal experience with Material You design
 
 </div>

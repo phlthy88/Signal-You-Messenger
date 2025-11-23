@@ -1,0 +1,30 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $SignalYouWindow : Adw.ApplicationWindow {
+  title: _("Signal You");
+  default-width: 1000;
+  default-height: 700;
+
+  Adw.ToastOverlay toast_overlay {
+    Adw.NavigationSplitView split_view {
+      min-sidebar-width: 300;
+      max-sidebar-width: 400;
+      sidebar-width-fraction: 0.35;
+
+      sidebar: Adw.NavigationPage {
+        title: _("Chats");
+        tag: "sidebar";
+
+        child: $ChatList chat_list {};
+      };
+
+      content: Adw.NavigationPage {
+        title: _("Conversation");
+        tag: "content";
+
+        child: $ChatView chat_view {};
+      };
+    }
+  }
+}

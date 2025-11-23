@@ -1,0 +1,52 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $MessageRow : Box {
+  orientation: horizontal;
+  spacing: 8;
+
+  styles ["message-row"]
+
+  Adw.Avatar avatar {
+    size: 32;
+    visible: false;
+  }
+
+  Box {
+    orientation: vertical;
+    spacing: 2;
+    hexpand: true;
+
+    Box message_bubble {
+      orientation: vertical;
+      spacing: 4;
+
+      styles ["message-bubble"]
+
+      Label content_label {
+        wrap: true;
+        wrap-mode: word_char;
+        xalign: 0;
+        selectable: true;
+        use-markup: false;
+      }
+    }
+
+    Box {
+      orientation: horizontal;
+      spacing: 4;
+      halign: end;
+
+      Label time_label {
+        styles ["message-time", "dim-label"]
+      }
+
+      Image status_icon {
+        icon-size: normal;
+        pixel-size: 12;
+
+        styles ["message-status"]
+      }
+    }
+  }
+}

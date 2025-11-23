@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="signal-you-messenger">
+  <schema id="com.signalyou.Messenger" path="/com/signalyou/Messenger/">
+
+    <!-- Window state -->
+    <key name="window-width" type="i">
+      <default>1000</default>
+      <summary>Window width</summary>
+      <description>The width of the main window</description>
+    </key>
+
+    <key name="window-height" type="i">
+      <default>700</default>
+      <summary>Window height</summary>
+      <description>The height of the main window</description>
+    </key>
+
+    <key name="window-maximized" type="b">
+      <default>false</default>
+      <summary>Window maximized</summary>
+      <description>Whether the window is maximized</description>
+    </key>
+
+    <!-- Notifications -->
+    <key name="notifications-enabled" type="b">
+      <default>true</default>
+      <summary>Enable notifications</summary>
+      <description>Show desktop notifications for new messages</description>
+    </key>
+
+    <key name="notification-sound" type="b">
+      <default>true</default>
+      <summary>Notification sound</summary>
+      <description>Play sound for notifications</description>
+    </key>
+
+    <!-- Privacy -->
+    <key name="send-read-receipts" type="b">
+      <default>true</default>
+      <summary>Send read receipts</summary>
+      <description>Let others know when you have read their messages</description>
+    </key>
+
+    <key name="send-typing-indicators" type="b">
+      <default>true</default>
+      <summary>Send typing indicators</summary>
+      <description>Let others know when you are typing</description>
+    </key>
+
+    <key name="link-previews" type="b">
+      <default>true</default>
+      <summary>Generate link previews</summary>
+      <description>Generate previews for links you send</description>
+    </key>
+
+    <!-- Appearance -->
+    <key name="color-scheme" type="s">
+      <default>'default'</default>
+      <summary>Color scheme</summary>
+      <description>The color scheme to use: 'default', 'light', or 'dark'</description>
+    </key>
+
+    <key name="compact-mode" type="b">
+      <default>false</default>
+      <summary>Compact mode</summary>
+      <description>Use compact message layout</description>
+    </key>
+
+    <!-- Behavior -->
+    <key name="enter-sends-message" type="b">
+      <default>true</default>
+      <summary>Enter sends message</summary>
+      <description>Press Enter to send messages (Shift+Enter for new line)</description>
+    </key>
+
+    <key name="start-minimized" type="b">
+      <default>false</default>
+      <summary>Start minimized</summary>
+      <description>Start the application minimized to system tray</description>
+    </key>
+
+    <key name="close-to-tray" type="b">
+      <default>true</default>
+      <summary>Close to tray</summary>
+      <description>Minimize to system tray instead of quitting when closing window</description>
+    </key>
+
+  </schema>
+</schemalist>

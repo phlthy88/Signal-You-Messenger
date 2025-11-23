@@ -1,0 +1,59 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ComposeBar : Adw.Bin {
+  styles ["compose-bar"]
+
+  Box {
+    spacing: 8;
+    margin-start: 12;
+    margin-end: 12;
+    margin-top: 8;
+    margin-bottom: 8;
+
+    Button attach_button {
+      icon-name: "mail-attachment-symbolic";
+      tooltip-text: _("Attach file");
+      valign: center;
+      clicked => $on_attach_clicked();
+
+      styles ["flat", "circular", "attach-button"]
+    }
+
+    ScrolledWindow {
+      hexpand: true;
+      max-content-height: 150;
+      propagate-natural-height: true;
+
+      TextView text_view {
+        wrap-mode: word_char;
+        accepts-tab: false;
+        top-margin: 8;
+        bottom-margin: 8;
+        left-margin: 12;
+        right-margin: 12;
+
+        styles ["card"]
+      }
+    }
+
+    MenuButton emoji_button {
+      icon-name: "face-smile-symbolic";
+      tooltip-text: _("Insert emoji");
+      valign: center;
+
+      popover: EmojiChooser {};
+
+      styles ["flat", "circular", "emoji-button"]
+    }
+
+    Button send_button {
+      icon-name: "go-up-symbolic";
+      tooltip-text: _("Send message");
+      valign: center;
+      clicked => $on_send_clicked();
+
+      styles ["circular", "suggested-action", "send-button"]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Signal You
+Comment=GTK4 Material You Signal Messenger client
+Exec=signal-you-messenger %U
+Icon=com.signalyou.Messenger
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;Chat;GTK;
+Keywords=signal;messenger;chat;encrypted;secure;sms;
+StartupNotify=true
+StartupWMClass=com.signalyou.Messenger
+MimeType=x-scheme-handler/sgnl;x-scheme-handler/signalcaptcha;
+X-GNOME-UsesNotifications=true
+# Translators: Search terms for the application
+X-GNOME-Keywords=signal;messenger;chat;encrypted;secure;sms;

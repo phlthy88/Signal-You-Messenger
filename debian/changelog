@@ -1,10 +1,12 @@
 signal-you-messenger (1.0.0-1) unstable; urgency=medium
 
-  * Initial release
-  * Secure messaging with real-time WebSocket communication
-  * AI-powered smart replies using Google Gemini
-  * Four beautiful themes including dark mode
-  * Contact management and user discovery
-  * File and image attachments
+  * Rewritten as GTK4/libadwaita native application
+  * Signal Protocol integration via libsignal
+  * Material You theming with adaptive accent colors
+  * Native GNOME desktop integration
+  * End-to-end encrypted messaging
+  * Private and group chats
+  * Media and file sharing
+  * System notifications with quick reply
 
- -- Signal You Team <team@signalyou.com>  Sat, 01 Jan 2024 00:00:00 +0000
+ -- Signal You Team <team@signalyou.com>  Sat, 23 Nov 2024 00:00:00 +0000
