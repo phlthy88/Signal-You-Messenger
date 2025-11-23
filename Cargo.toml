@@ -20,11 +20,33 @@ tokio = { version = "1.35", features = ["full"] }
 async-channel = "2.1"
 futures = "0.3"
 
-# Signal Protocol
-libsignal-protocol = "0.1"
-# Note: Full Signal integration requires additional crates from signalapp
-# poksho = "0.1"  # Signal's zero-knowledge proofs
-# zkgroup = "0.1"  # Group protocol
+# Signal Protocol cryptographic primitives
+# X25519 for Diffie-Hellman key exchange
+x25519-dalek = { version = "2.0", features = ["static_secrets"] }
+# Ed25519 for digital signatures
+ed25519-dalek = { version = "2.1", features = ["rand_core"] }
+# Curve25519 for low-level operations
+curve25519-dalek = "4.1"
+# AES-GCM for authenticated encryption
+aes-gcm = "0.10"
+# HKDF for key derivation
+hkdf = "0.12"
+# SHA-2 for hashing
+sha2 = "0.10"
+# HMAC for message authentication
+hmac = "0.12"
+# Zeroize for secure memory handling
+zeroize = { version = "1.7", features = ["derive"] }
+# Hex encoding for debugging
+hex = "0.4"
+# URL encoding for device linking
+urlencoding = "2.1"
+# HTTP client for Signal API
+http = "1.1"
+# Bytes for binary handling
+bytes = "1.5"
+# MIME type detection
+mime_guess = "2.0"
 
 # Serialization
 serde = { version = "1.0", features = ["derive"] }
